@@ -1,0 +1,177 @@
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+    <a class="navbar-brand" style="color:white;">Adapost adapost</a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarColor02" aria-controls="navbarColor02" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarColor02">
+      <ul class="navbar-nav mr-auto">
+        <li class="nav-item active">
+          <a class="nav-link" (click)="onOpenModal(null, 'add')">Adaugare adapost<span class="sr-only">(current)</span></a>
+        </li>
+      </ul>
+    </div>
+  </nav>
+
+<div class="container mt-3" id="main-container">
+    <div class="row">
+      <div  *ngFor="let shelter of shelters" class="col-md-3 col-xl-3">
+        <div class="card m-b-30">
+          <div class="card-body row" >
+            <a href="/pet/{{shelter.id}}"><img src="{{shelter?.imageUrl}}" alt="shelter_image" class="card-img-top"></a>
+          </div>
+          <ul class="list-group list-group-flush">
+            <li class="list-group-item text-center"><i class="fa fa-paw float-center"></i> {{shelter.name}} </li>
+          </ul>
+  
+          <div class="card-body">
+            <div class="float-right btn-group btn-group-sm">
+              <a (click)="onOpenModal(shelter, 'edit')" class="btn btn-primary tooltips" data-placement="top" data-toggle="tooltip" data-original-title="Edit"><i class="fa fa-pencil"></i> </a>
+              <a (click)="onOpenModal(shelter, 'info')" class="btn btn-info tooltips" data-placement="top" data-toggle="tooltip" data-original-title="Info"><i class="fa fa-book"></i></a>
+              <a (click)="onOpenModal(shelter, 'delete')" class="btn btn-danger tooltips" data-placement="top" data-toggle="tooltip" data-original-title="Delte"><i class="fa fa-trash-o" ></i></a>
+              <a (click)="onOpenModal(shelter, 'adopt')" class="btn btn-success tooltips" data-placement="top" data-toggle="tooltip" data-original-title="Delte"><i class="fa fa-paw"></i></a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+  
+  <!-- Add Shelter Modal -->
+  <div class="modal fade" id="addShelterModal" tabindex="-1" role="dialog" aria-labelledby="addShelterModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="addShelterModalLabel">Adaugare adapost</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          <form #addForm="ngForm" (ngSubmit)="onAddShelter(addForm)">
+            <div class="form-group">
+              <label for="name">Nume</label>
+              <input type="text" ngModel name="name" class="form-control" id="name" placeholder="Nume" required>
+            </div>
+            <div class="form-group">
+              <label for="address">Adresa</label>
+              <input type="text" ngModel name="address" class="form-control" id="address" placeholder="Address" required>
+            </div>
+            <div class="form-group">
+              <label for="imageUrl">Imagine</label>
+              <input type="text" ngModel name="imageUrl" class="form-control" id="imageUrl" placeholder="Imagine">
+            </div>
+            <div class="modal-footer">
+              <button type="button" id="add-shelter-form" class="btn btn-danger" data-dismiss="modal">Inchide</button>
+              <button [disabled]="addForm.invalid" type="submit" class="btn btn-success" >Salveaza</button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+  
+  <!-- Edit Modal -->
+  <div class="modal fade" id="editShelterModal" tabindex="-1" role="dialog" aria-labelledby="editShelterModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="editShelterModalLabel">Editare adapost</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          <form #editForm="ngForm">
+            <div class="form-group">
+              <label for="name">Nume</label>
+              <input type="text" ngModel="{{editShelter?.name}}" name="name" class="form-control" id="name" aria-describedby="emailHelp" placeholder="Nume">
+            </div>
+            <input type="hidden" ngModel="{{editShelter?.id}}" name="id" class="form-control" id="id" placeholder="id">
+  
+            <div class="form-group">
+              <label for="address">Specie</label>
+              <input type="text" ngModel="{{editShelter?.address}}" name="address" class="form-control" id="address" placeholder="Address">
+            </div>
+            <div class="form-group">
+              <label for="imageUrl">URL Imagine</label>
+              <input type="text" ngModel="{{editShelter?.imageUrl}}" name="imageUrl" class="form-control" id="imageUrl" placeholder="URL Imagine">
+            </div>
+            <div class="form-group">
+              <label for="img1">Image</label><br>
+              <input type="file" name="img1">
+            </div>
+            <div class="modal-footer">
+              <button type="button" id="" data-dismiss="modal" class="btn btn-danger">Inchide</button>
+              <button (click)="onUpdateShelter(editForm.value)" data-dismiss="modal" class="btn btn-success" >Salvare modificari</button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+  
+  
+  <!-- Delete Modal -->
+  <div class="modal fade" id="deleteShelterModal" tabindex="-1" role="dialog" aria-labelledby="deleteModelLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="deleteModelLabel">Stegere adapost</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          <p>Sunteti sigur(a) ca vreti sa stergeti adapostul: <b>{{deleteShelter?.name}}</b>?</p>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-dismiss="modal">No</button>
+            <button (click)="onDeleteShelter(deleteShelter?.id)" class="btn btn-danger" data-dismiss="modal">Yes</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  
+  <!-- Info Shelter  -->
+  <div class="modal fade" id="infoShelterModal" tabindex="-1" role="dialog" aria-labelledby="infoShelterModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="infoShelterModalLabel">Informatii adapost</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body ">
+          <form #editForm="ngForm">
+            <div class="container d-flex justify-content-center">
+              <div class="row">
+                <div  >
+                  <div class="card">
+                    <div class="card-body row" >
+                      <a href=""><img src="{{infoShelter?.imageUrl}}" alt="shelter_image" class="card-img-top"></a>
+                    </div>
+                    <ul class="list-group list-group-flush">
+                      <li class="list-group-item text-center"><i class="fa fa-paw float-center"></i> {{infoShelter?.name}} </li>
+                    </ul>
+  
+  
+                    <li class="list-group-item text-center">Id: {{infoShelter?.id}}</li>
+                    <li class="list-group-item text-center">Adresa: {{infoShelter?.address}}</li>
+  
+                  </div>
+                </div>
+  
+              </div>
+  
+            </div>
+          </form>
+        </div>
+        <div class="modal-footer">
+          <button type="button" id="add-employee-form" class="btn btn-primary" data-dismiss="modal">Inchide</button>
+        </div>
+      </div>
+    </div>
+  </div>

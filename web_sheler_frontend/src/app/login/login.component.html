@@ -1,0 +1,22 @@
+<div class="wrapper fadeInDown">
+    <div id="formContent">
+     <!--
+      <div class="alert alert-warning" *ngIf='invalidLogin'>{{errorMessage}}</div>
+      <div class="alert alert-success" *ngIf='loginSuccess'>{{successMessage}}</div>
+      -->
+      <h3>Conectare</h3>
+  
+      <form (ngSubmit)="handleLogin()">
+        <input type="text" id="username" class="fadeIn second" [(ngModel)]="user.username" name="username" placeholder="Email">
+        <input type="password" id="password" class="fadeIn third" [(ngModel)]="user.password" name="password" placeholder="Parola">
+        <input type="submit" class="fadeIn fourth" value="Conectare">
+        <div>
+          <br>
+          <div> Nu ai un cont, mergi la pagina de inregistrare</div>
+          <input type="button" class="btn btn-info" value="Inregistrea" (click)="redirect_register()">
+        </div>
+      </form>
+  
+    </div>
+  </div>
+  

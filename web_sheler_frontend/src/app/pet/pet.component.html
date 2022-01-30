@@ -1,0 +1,238 @@
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+    <a class="navbar-brand" style="color:white;">Adapost animale</a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarColor02" aria-controls="navbarColor02" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarColor02">
+      <ul class="navbar-nav mr-auto">
+        <li class="nav-item active">
+          <a class="nav-link" (click)="onOpenModal(null, 'add')">Adaugare animal<span class="sr-only">(current)</span></a>
+          <a class="nav-link" href="/shelter" >Vizualizare adaposturi<span class="sr-only">(current)</span></a>
+        </li>
+      </ul>
+    </div>
+  </nav>
+  
+  <div class="container mt-3" id="main-container">
+    <div class="row">
+      <div  *ngFor="let pet of pets" class="col-md-3 col-xl-3">
+        <div class="card m-b-30">
+          <div class="card-body row" >
+            <a href=""><img src="{{pet?.imageUrl}}" alt="pet_image" class="card-img-top"></a>
+          </div>
+          <ul class="list-group list-group-flush">
+            <li class="list-group-item text-center"><i class="fa fa-paw float-center"></i> {{pet.name}} </li>
+          </ul>
+  
+          <div class="card-body">
+            <div class="float-right btn-group btn-group-sm">
+              <a (click)="onOpenModal(pet, 'edit')" class="btn btn-primary tooltips" data-placement="top" data-toggle="tooltip" data-original-title="Edit"><i class="fa fa-pencil"></i> </a>
+              <a (click)="onOpenModal(pet, 'info')" class="btn btn-info tooltips" data-placement="top" data-toggle="tooltip" data-original-title="Info"><i class="fa fa-book"></i></a>
+              <a (click)="onOpenModal(pet, 'delete')" class="btn btn-danger tooltips" data-placement="top" data-toggle="tooltip" data-original-title="Delte"><i class="fa fa-trash-o" ></i></a>
+              <a (click)="onOpenModal(pet, 'adopt')" class="btn btn-success tooltips" data-placement="top" data-toggle="tooltip" data-original-title="Delte"><i class="fa fa-paw"></i></a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  
+  <!-- Add Pet Modal -->
+  <div class="modal fade" id="addPetModal" tabindex="-1" role="dialog" aria-labelledby="addPetModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="addPetModalLabel">Adaugare animal</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          <form #addForm="ngForm" (ngSubmit)="onAddPet(addForm)">
+            <div class="form-group">
+              <label for="name">Nume</label>
+              <input type="text" ngModel name="name" class="form-control" id="name" placeholder="Nume" required>
+            </div>
+            <div class="form-group">
+              <label for="dateBirth">Data nastere</label>
+              <input type="text" ngModel name="dateBirth" class="form-control" id="dateBirth" placeholder="Data nastere" required>
+            </div>
+            <div class="form-group">
+              <label for="species">Specie</label>
+              <input type="text" ngModel name="species" class="form-control" id="species" placeholder="Specie" required>
+            </div>
+            <div class="form-group">
+              <label for="sex">Imagine</label>
+              <input type="text" ngModel name="imageUrl" class="form-control" id="imageUrl" placeholder="Imagine">
+            </div>
+            <div class="form-group">
+                <label for="shlters_list">Adapost</label>
+                <!--
+                <select ng-options="item as item.name for item in shelters track by item.shelters" ng-model="selected"></select>
+                
+                <select id="shlters_list" ngModel name="shelter" class="form-control"
+                    #mySelect
+                        (change)='onOptionsSelected(mySelect.value)'>
+                    <option disabled>Alege adapost</option>
+                    <option *ngFor="let s of shelters"  [value]="s.id">{{s.name}}</option>
+                       
+                </select>
+                -->
+                <select id="shlters_list" ngModel name="shelter" class="form-control">
+                    <option disabled value>Alege adapost</option>
+                    <option *ngFor="let c of shelters" [ngValue]="c">{{c.name}}</option>
+                  </select>
+            </div>
+            <!-- <div class="form-group">
+               <div>
+                 <input type="file" (change)="onFileChanged($event)">
+               </div>
+               <div>
+                 <input type="button" (click)="onUpload()" value="upload">
+               </div>
+             </div> -->
+            <div class="form-group">
+            <label for="sex">Sex</label> <br>
+              <input type="radio" value="M" ngModel name="sex"  id="sex" > Mascul
+              <input type="radio" value="F" ngModel name="sex"  id="sex" > Femela
+  
+            </div>
+            <div class="modal-footer">
+              <button type="button" id="add-pet-form" class="btn btn-danger" data-dismiss="modal">Inchide</button>
+              <button [disabled]="addForm.invalid" type="submit" class="btn btn-success" >Salveaza</button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+  
+  <!-- Edit Modal -->
+  <div class="modal fade" id="editPetModal" tabindex="-1" role="dialog" aria-labelledby="editPetModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="editPetModalLabel">Editare animal</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          <form #editForm="ngForm">
+            <div class="form-group">
+              <label for="name">Nume</label>
+              <input type="text" ngModel="{{editPet?.name}}" name="name" class="form-control" id="name" aria-describedby="emailHelp" placeholder="Nume">
+            </div>
+            <input type="hidden" ngModel="{{editPet?.id}}" name="id" class="form-control" id="id" placeholder="id">
+  
+            <div class="form-group">
+              <label for="dateBirth">Data naster</label>
+              <input type="text" ngModel="{{editPet?.dateBirth}}" name="dateBirth" class="form-control" id="dateBirth" placeholder="Data nastere">
+            </div>
+            <div class="form-group">
+              <label for="species">Specie</label>
+              <input type="text" ngModel="{{editPet?.species}}" name="species" class="form-control" id="species" placeholder="Specie">
+            </div>
+            <div class="form-group">
+              <label for="imageUrl">URL Imagine</label>
+              <input type="text" ngModel="{{editPet?.imageUrl}}" name="imageUrl" class="form-control" id="imageUrl" placeholder="URL Imagine">
+            </div>
+
+            <!--
+            <div class="form-group">
+              <label for="img1">Image</label><br>
+              <input type="file" name="img1">
+            </div>
+            -->
+  
+            <div class="form-group">
+                <label for="shlters_list">Adapost</label>
+
+                <select id="shlters_list" ngModel="{{editPet?.shelter}}" name="shelter" class="form-control" >
+                    <option class="dropdown-item" disabled >Alege adapost</option>
+                    <!-- value="c.id === editPet?.shelter?.id"-->
+                    <option *ngFor="let c of shelters" [ngValue]="c">{{c.name}}</option>
+                  </select>
+            </div>
+
+            <div class="form-group">
+              <label for="sex">Sex</label> <br>
+              <input type="radio" value="M" name="sex" id="sex" ngModel="{{editPet?.sex}}"> Mascul
+              <input type="radio" value="F" name="sex" id="sex" ngModel="{{editPet?.sex}}"> Femela
+  
+            </div>
+            <div class="modal-footer">
+              <button type="button" id="" data-dismiss="modal" class="btn btn-danger">Inchide</button>
+              <button (click)="onUpdatePet(editForm.value)" data-dismiss="modal" class="btn btn-success" >Salvare modificari</button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+  
+  
+  <!-- Delete Modal -->
+  <div class="modal fade" id="deletePetModal" tabindex="-1" role="dialog" aria-labelledby="deleteModelLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="deleteModelLabel">Stegere Animal</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          <p>Sunteti sigur(a) ca vreti sa stergeti animalul: <b>{{deletePet?.name}}</b>?</p>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-dismiss="modal">No</button>
+            <button (click)="onDeletePet(deletePet?.id)" class="btn btn-danger" data-dismiss="modal">Yes</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  
+  <!-- Info Pet  -->
+  <div class="modal fade" id="infoPetModal" tabindex="-1" role="dialog" aria-labelledby="infoPetModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="infoPetModalLabel">Informatii animal</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body ">
+          <form #editForm="ngForm">
+            <div class="container d-flex justify-content-center">
+              <div class="row">
+                <div  >
+                  <div class="card">
+                    <div class="card-body row" >
+                      <a href=""><img src="{{infoPet?.imageUrl}}" alt="pet_image" class="card-img-top"></a>
+                    </div>
+                    <ul class="list-group list-group-flush">
+                      <li class="list-group-item text-center"><i class="fa fa-paw float-center"></i> {{infoPet?.name}} </li>
+                    </ul>
+  
+                    <li class="list-group-item text-center">Id: {{infoPet?.id}}</li>
+                    <li class="list-group-item text-center">Data nastere: {{infoPet?.dateBirth}}</li>
+                    <li class="list-group-item text-center"> Sex: {{infoPet?.sex}}</li>
+                    <li class="list-group-item text-center"> Shelter: {{infoPet?.shelter?.name}}</li>
+  
+                  </div>
+                </div>
+  
+              </div>
+  
+            </div>
+          </form>
+        </div>
+        <div class="modal-footer">
+          <button type="button" id="add-employee-form" class="btn btn-primary" data-dismiss="modal">Inchide</button>
+        </div>
+      </div>
+    </div>
+  </div>
+  

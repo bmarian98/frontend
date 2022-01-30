@@ -1,0 +1,32 @@
+<div class="wrapper fadeInDown">
+    <div id="formContent">
+    <!--
+      <div class="alert alert-warning" *ngIf='invalidRegistration'>{{errorMessage}}</div>
+      <div class="alert alert-success" *ngIf='registrationSuccess'>{{successMessage}}</div>
+    -->
+      <h3>Inregistrare</h3>
+  
+      <form (ngSubmit)="handleAuthentication()">
+        <input type="text" id="firstName" class="fadeIn second" [(ngModel)]="user.firstName" name="firstName" placeholder="Nume">
+        <input type="text" id="lastName" class="fadeIn third" [(ngModel)]="user.lastName" name="lastName" placeholder="Prenume">
+        <input type="text" id="username" class="fadeIn fourth" [(ngModel)]="user.username" name="username" placeholder="Nume utilizator">
+        <input type="text" id="email" class="fadeIn fifth" [(ngModel)]="user.email" name="email" placeholder="Email">
+        <input type="password" id="password" class="fadeIn sixth" [(ngModel)]="user.password" name="password" placeholder="Parola">
+        <input type="password" id="password1" class="fadeIn seventh" [(ngModel)]="user.password1" name="password1" placeholder="Reintrodu parola">
+        <div class="form-group" class="fadeIn eighth">
+            <label for="sex" class="fadeIn seventh">Sex</label> <br>
+            <input type="radio" value="M" class="fadeIn eighth" [(ngModel)]="user.sex" name="sex"  id="sex" > Masculin
+            <input type="radio" value="F" class="fadeIn eighth" [(ngModel)]="user.sex" name="sex"  id="sex" > Feminin
+
+          </div>
+        <div>
+          <br>
+          <div> Ai deja un cont, mergi la pagina de logare</div>
+          <input type="button" class="btn btn-info" value="Logare" (click)="redirect_login()">
+        </div>
+        
+        <input type="submit" class="fadeIn nineth" value="Inregistrare">
+      </form>
+  
+    </div>
+  </div>
